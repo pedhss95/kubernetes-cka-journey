@@ -1,0 +1,30 @@
+
+# Environment variables
+.env
+.env.*
+
+# Kubernetes credentials
+.kube/
+kubeconfig
+admin.conf
+
+# Certificates and private keys
+*.key
+*.pem
+*.crt
+
+# Temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
