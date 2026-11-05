@@ -52,5 +52,29 @@ I reinforced my understanding of Kubernetes networking and learned that the Pod,
 
 ## Next challenge
 
-Day 02 — YAML and Pod creation.
+# Dia 02 — YAML e criação de Pods
 
+## Objetivo
+Compreender a estrutura dos arquivos YAML utilizados pelo Kubernetes e aprender a criar recursos de forma declarativa.
+
+## Conteúdos estudados
+
+- Diferença entre `kind` e `apiVersion`.
+- Estrutura de um manifesto YAML.
+- Especificação de imagens de containers utilizando o campo `image`.
+- Funcionamento do comando `kubectl apply -f`.
+- Diferença entre criar Pods diretamente e utilizar Deployments.
+- Conceito de réplicas (`replicas`) em Deployments.
+
+## Principais aprendizados
+
+**1. kind e apiVersion**
+
+- `kind`: define o tipo de recurso que será criado, como Pod, Deployment ou Service.
+- `apiVersion`: identifica o grupo e a versão da API utilizada pelo recurso.
+
+Exemplos:
+
+```yaml
+apiVersion: v1
+kind: Pod
