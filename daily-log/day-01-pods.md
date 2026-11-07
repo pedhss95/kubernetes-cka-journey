@@ -78,3 +78,17 @@ Exemplos:
 ```yaml
 apiVersion: v1
 kind: Pod
+
+# Dia 03 - Deployments e ReplicaSets
+
+🚀 Mais um passo na preparação para a certificação CKA!
+
+Hoje foi dia de praticar **Deployments, ReplicaSets e o mecanismo de reconciliação do Kubernetes**.
+
+No laboratório, testei o escalonamento de um Deployment de 3 réplicas para 0 e, posteriormente, para 3, observando como o Kubernetes mantém o estado desejado da aplicação.
+
+Mais um aprendizado consolidado na prática!
+
+**Próximo desafio:** Rolling Updates e Rollbacks. 💻
+
+#Kubernetes #CKA #DevOps #CloudComputing #LearningByDoing
