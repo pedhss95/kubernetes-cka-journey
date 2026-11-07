@@ -92,3 +92,36 @@ Mais um aprendizado consolidado na prática!
 **Próximo desafio:** Rolling Updates e Rollbacks. 💻
 
 #Kubernetes #CKA #DevOps #CloudComputing #LearningByDoing
+
+## Day 04 — Kubernetes Rolling Updates
+
+**Conteúdo estudado:**
+- Estratégia de atualização RollingUpdate.
+- Como o Deployment Controller utiliza ReplicaSets para substituir Pods gradualmente.
+- Parâmetros `maxSurge` e `maxUnavailable`.
+- Regras de arredondamento dos percentuais desses parâmetros.
+- Relação entre disponibilidade da aplicação e atualização de versões.
+
+**Laboratório prático:**
+- Inspeção de Deployments e ReplicaSets.
+- Atualização da imagem do Nginx de `nginx:1.25` para `nginx:1.26`.
+- Acompanhamento do processo com `kubectl rollout status`.
+- Análise do comportamento dos ReplicaSets durante a atualização.
+
+**Configurações estudadas:**
+
+```yaml
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+```
+
+**Próximo desafio:**
+- Estudar Rollbacks.
+- Consultar o histórico de revisões com `kubectl rollout history`.
+- Executar rollback com `kubectl rollout undo`.
+
+**Status:** Rolling Updates — Estudado e praticado.
+
