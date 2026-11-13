@@ -124,4 +124,101 @@ strategy:
 - Executar rollback com `kubectl rollout undo`.
 
 **Status:** Rolling Updates — Estudado e praticado.
+# Day 08 — Deployment Rollbacks
 
+**Status:** Completed  
+**Date:** 12/11/2026  
+**Topic:** Kubernetes Deployments — Rollbacks
+
+## 1. Objective
+
+Understand how Kubernetes manages Deployment revisions and how to revert an application to a previous version using Rollbacks.
+
+## 2. Commands Practiced
+
+### View Deployment revision history
+
+```bash
+kubectl rollout history deployment nginx-deployment
+```
+
+### Inspect a specific revision
+
+```bash
+kubectl rollout history deployment nginx-deployment --revision=2
+```
+
+### Rollback to a specific revision
+
+```bash
+kubectl rollout undo deployment nginx-deployment --to-revision=1
+```
+
+### Rollback to the previous revision
+
+```bash
+kubectl rollout undo deployment nginx-deployment
+```
+
+### Monitor rollout status
+
+```bash
+kubectl rollout status deployment nginx-deployment
+```
+
+## 3. Key Learnings
+
+- Kubernetes maintains a history of Deployment revisions.
+- Each change to the Pod Template can generate a new revision.
+- A rollback creates a new revision instead of simply restoring the old revision number.
+- Kubernetes can reuse an existing ReplicaSet during a rollback.
+- The `pod-template-hash` identifies the Pod Template, not the Deployment revision.
+- The `revisionHistoryLimit` controls how many old ReplicaSets are retained. Its default value is 10.
+- Without `--to-revision`, `kubectl rollout undo` returns to the previous revision.
+
+## 4. Practical Lab
+
+Investigated the revision history of `nginx-deployment`.
+
+| Revision | Container Image |
+|---|---|
+| 1 | nginx |
+| 2 | nginx:1.26 |
+| 3 | nginx |
+
+Executed a rollback to revision 1:
+
+```bash
+kubectl rollout undo deployment nginx-deployment --to-revision=1
+```
+
+After the rollback, the Deployment history showed revisions 2 and 3.
+
+An interesting observation was that revision 3 recovered the same `pod-template-hash` observed in revision 1, demonstrating that the Pod Template had returned to its previous configuration.
+
+## 5. Important Concepts
+
+**Deployment → ReplicaSet → Pods**
+
+The Deployment Controller manages ReplicaSets, which are responsible for maintaining the desired number of Pods.
+
+During a rollback, Kubernetes can reactivate an existing ReplicaSet instead of creating an entirely new one.
+
+## 6. Knowledge Check
+
+- What command displays the revision history?
+- How can we return to a specific revision?
+- Does a rollback create a new revision?
+- What is the difference between Revision and Pod Template Hash?
+- Can Kubernetes reuse an existing ReplicaSet during a rollback?
+
+## 7. Next Challenge
+
+Study Deployment update strategies:
+
+- RollingUpdate
+- Recreate
+- maxSurge
+- maxUnavailable
+
+Continue practicing Kubernetes administration with a focus on the CKA certification.
