@@ -222,3 +222,96 @@ Study Deployment update strategies:
 - maxUnavailable
 
 Continue practicing Kubernetes administration with a focus on the CKA certification.
+
+# Dia 08 — Deployment Strategies: RollingUpdate e Recreate
+
+**Data:** 16/11/2026  
+**Status:** Concluído  
+**Trilha:** Kubernetes CKA
+
+## 1. Objetivo
+
+Compreender as estratégias de atualização de Deployments no Kubernetes, analisar o comportamento dos ReplicaSets e praticar atualizações e Rollbacks em laboratório.
+
+## 2. Conteúdos estudados
+
+### RollingUpdate
+
+Estratégia padrão de atualização gradual dos Pods.
+
+- `maxSurge`: quantidade adicional de Pods permitida durante a atualização.
+- `maxUnavailable`: quantidade máxima de Pods que podem ficar indisponíveis durante a atualização.
+- `maxSurge` utiliza arredondamento para cima.
+- `maxUnavailable` utiliza arredondamento para baixo.
+
+### Recreate
+
+Estratégia que encerra os Pods antigos antes de iniciar os novos.
+
+- Não utiliza `maxSurge` ou `maxUnavailable`.
+- Pode provocar indisponibilidade temporária da aplicação.
+- Evita a coexistência das versões antiga e nova durante a atualização.
+- Útil quando versões diferentes da aplicação não podem funcionar simultaneamente.
+
+## 3. Prática no laboratório
+
+Alteração da estratégia utilizando:
+
+```bash
+kubectl edit deployment nginx-deployment
+```
+
+Configuração aplicada:
+
+```yaml
+strategy:
+  type: Recreate
+```
+
+Atualização da imagem:
+
+```bash
+kubectl set image deployment/nginx-deployment nginx=nginx:1.27
+```
+
+Nova atualização:
+
+```bash
+kubectl set image deployment/nginx-deployment nginx=nginx:1.28
+```
+
+Acompanhamento dos recursos:
+
+```bash
+kubectl get pods -w
+kubectl get replicasets -w
+kubectl get deployment nginx-deployment
+```
+
+## 4. Principais aprendizados
+
+1. Alterar a estratégia de atualização não provoca, por si só, a recriação dos Pods existentes.
+2. Uma alteração no Pod Template dispara uma nova revisão do Deployment.
+3. Durante o Recreate, o ReplicaSet antigo é escalado para zero e o novo assume as réplicas desejadas.
+4. ReplicaSets antigos são preservados para possibilitar Rollbacks.
+5. O Kubernetes pode reutilizar um ReplicaSet existente durante um Rollback, caso o Pod Template correspondente já exista.
+6. O estado Terminating merece atenção: um Pod pode continuar encerrando seus processos mesmo após o início da exclusão.
+
+## 5. Comandos importantes para a CKA
+
+| Comando | Finalidade |
+|---|---|
+| `kubectl edit deployment` | Editar um Deployment |
+| `kubectl set image` | Atualizar a imagem |
+| `kubectl get replicasets` | Listar ReplicaSets |
+| `kubectl get pods -w` | Acompanhar Pods em tempo real |
+| `kubectl rollout history` | Consultar revisões |
+| `kubectl rollout undo` | Reverter uma atualização |
+
+## 6. Reflexão do dia
+
+Hoje avancei na compreensão do funcionamento interno dos Deployments, principalmente na relação entre estratégias de atualização, ReplicaSets e Rollbacks.
+
+O laboratório permitiu observar como o Kubernetes substitui os Pods e mantém o histórico de versões, reforçando a importância de compreender o mecanismo de reconciliação do cluster.
+
+**Próximo passo:** continuar aprofundando o gerenciamento de Deployments e praticar questões no estilo CKA.
