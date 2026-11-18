@@ -315,3 +315,35 @@ Hoje avancei na compreensão do funcionamento interno dos Deployments, principal
 O laboratório permitiu observar como o Kubernetes substitui os Pods e mantém o histórico de versões, reforçando a importância de compreender o mecanismo de reconciliação do cluster.
 
 **Próximo passo:** continuar aprofundando o gerenciamento de Deployments e praticar questões no estilo CKA.
+
+# Dia 7 — Diagnóstico de falha em um rollout
+
+## Objetivo
+
+Simular uma falha de atualização em um Deployment, investigar a causa
+e recuperar a versão anterior.
+
+## Prática
+
+Configurei o Deployment para usar RollingUpdate e apliquei uma tag de
+imagem inexistente. O novo Pod apresentou os estados `ErrImagePull` e
+`ImagePullBackOff`, enquanto os Pods anteriores permaneceram disponíveis
+neste teste.
+
+Usei `kubectl describe pod` para consultar os eventos e identificar que a
+tag da imagem não foi encontrada. Depois, consultei o histórico e executei
+um rollback.
+
+## Comandos utilizados
+
+```bash
+kubectl patch deployment nginx-deployment \
+  -p '{"spec":{"strategy":{"type":"RollingUpdate"}}}'
+
+kubectl set image deployment/nginx-deployment nginx=nginx:versao-inexistente
+kubectl get pods -w
+kubectl describe pod <nome-do-pod>
+kubectl rollout history deployment/nginx-deployment
+kubectl rollout undo deployment/nginx-deployment
+kubectl rollout status deployment/nginx-deployment
+kubectl get replicasets
