@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-wave
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx-wave
+  template:
+    metadata:
+      labels:
+        app: nginx-wave
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
